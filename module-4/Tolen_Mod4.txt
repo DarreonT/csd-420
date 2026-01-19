@@ -1,0 +1,54 @@
+import java.util.LinkedList;
+import java.util.Iterator;
+
+public class LinkedListTraversalTest {
+    public static void main(String[] args) {
+        // Test with 50,000 integers first
+        testLinkedListTraversal(50_000);
+        
+        // Test with 500,000 integers next
+        testLinkedListTraversal(500_000);
+    }
+
+    public static void testLinkedListTraversal(int size) {
+        LinkedList<Integer> list = new LinkedList<>();
+
+        // Fill the LinkedList with integers
+        for (int i = 0; i < size; i++) {
+            list.add(i);
+        }
+
+        // Simple correctness check
+        if (list.get(0) != 0 || list.get(list.size() - 1) != size - 1) {
+            System.out.println("Error: List elements are incorrect!");
+        } else {
+            System.out.println("List of size " + size + " correctly populated.");
+        }
+
+        // Traverse using Iterator
+        long startTime = System.currentTimeMillis();
+        Iterator<Integer> it = list.iterator();
+        long sumIterator = 0; // sum to ensure the loop does something
+        while (it.hasNext()) {
+            sumIterator += it.next();
+        }
+        long endTime = System.currentTimeMillis();
+        System.out.println("Iterator traversal took: " + (endTime - startTime) + " ms");
+
+        // Traverse using get(index)
+        startTime = System.currentTimeMillis();
+        long sumGet = 0;
+        for (int i = 0; i < list.size(); i++) {
+            sumGet += list.get(i);
+        }
+        endTime = System.currentTimeMillis();
+        System.out.println("get(index) traversal took: " + (endTime - startTime) + " ms");
+
+        // Simple check to avoid compiler optimization removing loops
+        if (sumIterator != sumGet) {
+            System.out.println("Error: Traversal sums do not match!");
+        }
+
+        System.out.println("--------------------------------------------------");
+    }
+}
